@@ -99,6 +99,7 @@ pipeline {
                     dir('kogito-examples-bot') {
                         prepareForPR('kogito-examples')
                         maven.mvnVersionsSet(getSnapshotVersion(), true)
+                        updateOptaPlannerVersion(util.getNextVersion(getOptaPlannerVersion(), 'micro'))
                         commitAndCreatePR('kogito-examples')
                     }
                     dir('kogito-examples') {
@@ -161,6 +162,10 @@ boolean isRelease() {
 
 String getProjectVersion() {
     return getParamOrDeployProperty('PROJECT_VERSION', 'project.version')
+}
+
+String getOptaPlannerVersion(){
+    return params.OPTAPLANNER_VERSION
 }
 
 String getSnapshotVersion() {
@@ -291,4 +296,8 @@ void forcePushProtectedBranch(String repo, String defaultBranch, String tempBran
         """
     }
     setDefaultBranch(repo, defaultBranch)
+}
+
+void updateOptaPlannerVersion(String newVersion) {
+    sh "mvn versions:update-property -Dproperty=version.org.optaplanner -DnewVersion=[$newVersion] -DallowSnapshots=true -DgenerateBackupPoms=false"
 }
