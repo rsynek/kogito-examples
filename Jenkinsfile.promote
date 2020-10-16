@@ -300,5 +300,5 @@ void forcePushProtectedBranch(String repo, String defaultBranch, String tempBran
 }
 
 void updateOptaPlannerVersion(String newVersion) {
-    sh "mvn versions:update-property -Dproperty=version.org.optaplanner -DnewVersion=[$newVersion] -DallowSnapshots=true -DgenerateBackupPoms=false"
+    sh "mvn versions:set-property -Dproperty=version.org.optaplanner -DnewVersion=[$newVersion] -DallowSnapshots=true -DgenerateBackupPoms=false"
 }
